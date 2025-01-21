@@ -131,16 +131,16 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         setFocusable(true);
 
         //load images
-        wallImage = new ImageIcon(getClass().getResource("assets/img/wall.png")).getImage();
-        blueGhostImage = new ImageIcon(getClass().getResource("assets/img/blueGhost.png")).getImage();
-        orangeGhostImage = new ImageIcon(getClass().getResource("assets/img/orangeGhost.png")).getImage();
-        pinkGhostImage = new ImageIcon(getClass().getResource("assets/img/pinkGhost.png")).getImage();
-        redGhostImage = new ImageIcon(getClass().getResource("assets/img/redGhost.png")).getImage();
+        wallImage = new ImageIcon(getClass().getResource("../assets/img/wall.png")).getImage();
+        blueGhostImage = new ImageIcon(getClass().getResource("../assets/img/blueGhost.png")).getImage();
+        orangeGhostImage = new ImageIcon(getClass().getResource("../assets/img/orangeGhost.png")).getImage();
+        pinkGhostImage = new ImageIcon(getClass().getResource("../assets/img/pinkGhost.png")).getImage();
+        redGhostImage = new ImageIcon(getClass().getResource("../assets/img/redGhost.png")).getImage();
 
-        pacmanUpImage = new ImageIcon(getClass().getResource("assets/img/pacmanUp.png")).getImage();
-        pacmanDownImage = new ImageIcon(getClass().getResource("assets/img/pacmanDown.png")).getImage();
-        pacmanLeftImage = new ImageIcon(getClass().getResource("assets/img/pacmanLeft.png")).getImage();
-        pacmanRightImage = new ImageIcon(getClass().getResource("assets/img/pacmanRight.png")).getImage();
+        pacmanUpImage = new ImageIcon(getClass().getResource("../assets/img/pacmanUp.png")).getImage();
+        pacmanDownImage = new ImageIcon(getClass().getResource("../assets/img/pacmanDown.png")).getImage();
+        pacmanLeftImage = new ImageIcon(getClass().getResource("../assets/img/pacmanLeft.png")).getImage();
+        pacmanRightImage = new ImageIcon(getClass().getResource("../assets/img/pacmanRight.png")).getImage();
 
         loadMap();
         for (Block ghost : ghosts) {
