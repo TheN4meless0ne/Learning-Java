@@ -15,27 +15,52 @@ public class Minesweeper {
         }
     }
 
-    int tileSize = 70;
-    int numRows = 8;
-    int numCols = numRows;
-    int boardWidth = numCols * tileSize;
-    int boardHeight = numRows * tileSize;
+    public int getBoardWidth() {
+        return boardWidth;
+    }
+
+    public int getBoardHeight() {
+        return boardHeight;
+    }
+
+    public int getStreak() {
+        return streak;
+    }
+
+    StartMenu startMenu;
+    int tileSize = 50;
+    int numRows;
+    int numCols;
+    int boardWidth;
+    int boardHeight;
+    MineTile[][] board;
     
     JFrame frame = new JFrame("Minesweeper");
     JLabel textLabel = new JLabel();
     JPanel textPanel = new JPanel();
     JPanel boardPanel = new JPanel();
 
-    int mineCount = 10;
-    MineTile[][] board = new MineTile[numRows][numCols];
+    int mineCount;
     ArrayList<MineTile> mineList;
     Random random = new Random();
 
     int tilesClicked = 0; //goal is to click all tiles except the ones containing mines
     boolean gameOver = false;
+    int streak = 0;
 
-    Minesweeper() {
-        // frame.setVisible(true);
+    public Minesweeper(StartMenu startMenu) {
+        this.startMenu = startMenu;
+    }
+
+    public void startGame() {
+        numRows = startMenu.getNumRows();
+        numCols = numRows;
+        boardWidth = numCols * tileSize;
+        boardHeight = numRows * tileSize;
+        mineCount = startMenu.getMineCount();
+
+        board = new MineTile[numRows][numCols];
+
         frame.setSize(boardWidth, boardHeight);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
@@ -51,8 +76,7 @@ public class Minesweeper {
         textPanel.add(textLabel);
         frame.add(textPanel, BorderLayout.NORTH);
 
-        boardPanel.setLayout(new GridLayout(numRows, numCols)); //8x8
-        // boardPanel.setBackground(Color.green);
+        boardPanel.setLayout(new GridLayout(numRows, numCols));
         frame.add(boardPanel);
 
         for (int r = 0; r < numRows; r++) {
@@ -62,7 +86,7 @@ public class Minesweeper {
 
                 tile.setFocusable(false);
                 tile.setMargin(new Insets(0, 0, 0, 0));
-                tile.setFont(new Font("Arial Unicode MS", Font.PLAIN, 45));
+                tile.setFont(new Font("Arial Unicode MS", Font.PLAIN, 32));
                 // tile.setText("💣");
                 tile.addMouseListener(new MouseAdapter() {
                     @Override
@@ -108,11 +132,6 @@ public class Minesweeper {
     void setMines() {
         mineList = new ArrayList<MineTile>();
 
-        // mineList.add(board[2][2]);
-        // mineList.add(board[2][3]);
-        // mineList.add(board[5][6]);
-        // mineList.add(board[3][4]);
-        // mineList.add(board[1][1]);
         int mineLeft = mineCount;
         while (mineLeft > 0) {
             int r = random.nextInt(numRows); //0-7
@@ -134,6 +153,7 @@ public class Minesweeper {
 
         gameOver = true;
         textLabel.setText("Game Over!");
+        streak = 0;
     }
 
     void checkMine(int r, int c) {
@@ -188,6 +208,7 @@ public class Minesweeper {
         if (tilesClicked == numRows * numCols - mineList.size()) {
             gameOver = true;
             textLabel.setText("Mines Cleared!");
+            streak += 1;
         }
     }
 
@@ -201,4 +222,3 @@ public class Minesweeper {
         return 0;
     }
 }
-
