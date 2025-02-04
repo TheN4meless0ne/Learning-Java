@@ -23,10 +23,6 @@ public class Minesweeper {
         return boardHeight;
     }
 
-    public int getStreak() {
-        return streak;
-    }
-
     StartMenu startMenu;
     int tileSize = 50;
     int numRows;
@@ -39,6 +35,8 @@ public class Minesweeper {
     JLabel textLabel = new JLabel();
     JPanel textPanel = new JPanel();
     JPanel boardPanel = new JPanel();
+    JPanel buttonPanel = new JPanel();
+    JButton exitButton = new JButton("Exit to Start Menu");
 
     int mineCount;
     ArrayList<MineTile> mineList;
@@ -46,7 +44,6 @@ public class Minesweeper {
 
     int tilesClicked = 0; //goal is to click all tiles except the ones containing mines
     boolean gameOver = false;
-    int streak = 0;
 
     public Minesweeper(StartMenu startMenu) {
         this.startMenu = startMenu;
@@ -124,6 +121,17 @@ public class Minesweeper {
             }
         }
 
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                StartMenu.main(null);
+            }
+        });
+
+        buttonPanel.add(exitButton);
+        frame.add(buttonPanel, BorderLayout.SOUTH);
+
         frame.setVisible(true);
 
         setMines();
@@ -153,7 +161,6 @@ public class Minesweeper {
 
         gameOver = true;
         textLabel.setText("Game Over!");
-        streak = 0;
     }
 
     void checkMine(int r, int c) {
@@ -208,7 +215,6 @@ public class Minesweeper {
         if (tilesClicked == numRows * numCols - mineList.size()) {
             gameOver = true;
             textLabel.setText("Mines Cleared!");
-            streak += 1;
         }
     }
 

@@ -30,7 +30,6 @@ public class StartMenu {
 
         JFrame frame = new JFrame("Minesweeper");
         JLabel welcomeLabel = new JLabel("Welcome to Minesweeper!", SwingConstants.CENTER);
-        JLabel streakLabel = new JLabel("Streak: " + minesweeper.getStreak(), SwingConstants.CENTER);
         JLabel difficultyLabel = new JLabel("Choose a difficulty level:", SwingConstants.CENTER);
         JButton easyButton = new JButton("Easy");
         JButton mediumButton = new JButton("Medium");
@@ -74,8 +73,6 @@ public class StartMenu {
 
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 25));
         welcomeLabel.setBounds(0, 100, boardWidth, 50);
-        streakLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-        streakLabel.setBounds(0, 150, boardWidth, 20);
         difficultyLabel.setFont(new Font("Arial", Font.BOLD, 20));
         difficultyLabel.setBounds(0, 200, boardWidth, 20);
 
@@ -84,7 +81,6 @@ public class StartMenu {
         hardButton.setBounds(startX + 2 * (buttonWidth + gap), startY + 50, buttonWidth, buttonHeight);
 
         frame.add(welcomeLabel);
-        frame.add(streakLabel);
         frame.add(difficultyLabel);
         frame.add(easyButton);
         frame.add(mediumButton);
