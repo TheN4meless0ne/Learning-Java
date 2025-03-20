@@ -118,6 +118,21 @@ public class BlackJack {
                 g.setFont(new Font("Arial", Font.PLAIN, 30));
                 g.setColor(Color.WHITE);
                 g.drawString(message, 220, 250);
+                
+                playAgainButton.setFocusable(false);
+                playAgainButton.addActionListener(e -> {
+                    hitButton.setEnabled(true);
+                    stayButton.setEnabled(true);
+                    buttonPanel.remove(playAgainButton);
+                    startGame();
+                    gamePanel.repaint();
+                    buttonPanel.revalidate();
+                    buttonPanel.repaint();
+                });
+
+                buttonPanel.add(playAgainButton);
+                buttonPanel.revalidate();
+                buttonPanel.repaint();
             }
 
             } catch (Exception e) {
@@ -128,6 +143,7 @@ public class BlackJack {
     JPanel buttonPanel = new JPanel();
     JButton hitButton = new JButton("Hit");
     JButton stayButton = new JButton("Stay");
+    JButton playAgainButton = new JButton("Play Again");
 
     BlackJack() {
         startGame();
@@ -135,7 +151,7 @@ public class BlackJack {
         frame.setVisible(true);
         frame.setSize(boardWidth, boardHeight);
         frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
+        frame.setResizable(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         gamePanel.setLayout(new BorderLayout());
