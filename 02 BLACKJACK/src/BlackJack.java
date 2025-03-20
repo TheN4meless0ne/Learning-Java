@@ -51,6 +51,8 @@ public class BlackJack {
     ArrayList<Card> playerHand;
     int playerSum;
     int playerAceCount;
+    public int money = 100;
+    public int bet = 50;
 
     // window
     int boardWidth = 600;
@@ -100,16 +102,16 @@ public class BlackJack {
                 }
                 else if (dealerSum > 21) {
                     message = "You Win!";
-                }
-                else if (playerSum > dealerSum) {
-                    message = "You Win!";
+                    money += bet * 2;
                 }
                 //both you and dealer <= 21
                 else if (playerSum == dealerSum) {
                     message = "Tie!";
+                    money += bet;
                 }
                 else if (playerSum > dealerSum) {
                     message = "You Win!";
+                    money += bet * 2;
                 }
                 else if (playerSum < dealerSum) {
                     message = "You Lose!";
@@ -121,10 +123,14 @@ public class BlackJack {
                 
                 playAgainButton.setFocusable(false);
                 playAgainButton.addActionListener(e -> {
+                    moneyLabel.setText("Money: " + money);
+
                     hitButton.setEnabled(true);
                     stayButton.setEnabled(true);
                     buttonPanel.remove(playAgainButton);
+
                     startGame();
+
                     gamePanel.repaint();
                     buttonPanel.revalidate();
                     buttonPanel.repaint();
@@ -141,6 +147,8 @@ public class BlackJack {
         }
     };
     JPanel buttonPanel = new JPanel();
+    JLabel moneyLabel = new JLabel("Money: " + money);
+    JLabel betLabel = new JLabel("Bet: " + bet);
     JButton hitButton = new JButton("Hit");
     JButton stayButton = new JButton("Stay");
     JButton playAgainButton = new JButton("Play Again");
@@ -158,6 +166,8 @@ public class BlackJack {
         gamePanel.setBackground(new Color(53, 101, 77));
         frame.add(gamePanel);
 
+        buttonPanel.add(moneyLabel);
+        buttonPanel.add(betLabel);
         hitButton.setFocusable(false);
         buttonPanel.add(hitButton);
         stayButton.setFocusable(false);
