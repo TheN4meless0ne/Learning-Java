@@ -39,6 +39,8 @@ public class BlackJack {
         }
     }
 
+    private static final boolean DEV_FORCE_BLACKJACK = false; // TODO: remove before shipping
+
     private ArrayList<Card> deck;
     private Random random = new Random(); // shuffle deck
     private Map<String, Image> cardImages = new HashMap<>();
@@ -96,9 +98,17 @@ public class BlackJack {
                 System.out.println(dealerSum);
                 System.out.println(playerSum);
 
+                boolean playerBlackjack = playerHand.size() == 2 && playerSum == 21;
+
                 String message = "";
                 if (playerSum > 21) {
                     message = "You Lose!";
+                }
+                else if (playerBlackjack && dealerSum == 21) {
+                    message = "Tie!";
+                }
+                else if (playerBlackjack) {
+                    message = "Blackjack!";
                 }
                 else if (dealerSum > 21) {
                     message = "You Win!";
@@ -106,7 +116,6 @@ public class BlackJack {
                 else if (playerSum > dealerSum) {
                     message = "You Win!";
                 }
-                //both you and dealer <= 21
                 else if (playerSum == dealerSum) {
                     message = "Tie!";
                 }
@@ -159,6 +168,7 @@ public class BlackJack {
             stayButton.setEnabled(true);
             buttonPanel.remove(playAgainButton);
             startGame();
+            checkForBlackjack();
             gamePanel.repaint();
             buttonPanel.revalidate();
             buttonPanel.repaint();
@@ -173,6 +183,8 @@ public class BlackJack {
                 gamePanel.repaint();
                 if (reducePlayerAce() > 21) { // A + 2 + J --> 1 + 2 + J
                     hitButton.setEnabled(false);
+                } else if (reducePlayerAce() == 21) { // Blackjack — end game automatically
+                    stayButton.doClick();
                 }
             }
         });
@@ -193,6 +205,15 @@ public class BlackJack {
         });
 
         gamePanel.repaint();
+
+        // Check for blackjack on initial deal — all listeners are now registered
+        SwingUtilities.invokeLater(this::checkForBlackjack);
+    }
+
+    private void checkForBlackjack() {
+        if (reducePlayerAce() == 21) {
+            stayButton.doClick();
+        }
     }
 
     private void loadImages() {
@@ -245,11 +266,19 @@ public class BlackJack {
             playerHand.add(card);
         }
 
+        // DEV: force player blackjack for testing
+        if (DEV_FORCE_BLACKJACK) {
+            playerHand.clear();
+            playerHand.add(new Card("A", "S"));
+            playerHand.add(new Card("K", "S"));
+            playerSum = 21;
+            playerAceCount = 1;
+        }
+
         System.out.println("PLAYER: ");
         System.out.println(playerHand);
         System.out.println(playerSum);
         System.out.println(playerAceCount);
-
     }
 
     public void buildDeck() {
