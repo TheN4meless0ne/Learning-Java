@@ -21,7 +21,7 @@ public class BlackJack {
 
         public int getValue() {
             if ("AJQK".contains(value)) { // A, J, Q, K
-                if (value == "A") {
+                if ("A".equals(value)) {
                     return 11;
                 }
                 return 10;
@@ -30,7 +30,7 @@ public class BlackJack {
         }
 
         public boolean isAce() {
-            return value == "A";
+            return "A".equals(value);
         }
 
         public String getImagePath() {
