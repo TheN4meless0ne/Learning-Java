@@ -89,6 +89,21 @@ public class BlackJack {
                 g.drawImage(cardImg, 20 + (cardWidth + 5) * i, 320, cardWidth, cardHeight, null);
             }
 
+            // draw scores
+            g.setFont(new Font("Arial", Font.PLAIN, 16));
+            g.setColor(Color.WHITE);
+            if (stayButton.isEnabled()) {
+                // game in progress: show dealer's visible cards only, hide hidden card
+                int visibleDealerSum = 0;
+                for (Card card : dealerHand) {
+                    visibleDealerSum += card.getValue();
+                }
+                g.drawString("Dealer: " + visibleDealerSum, 20, 200);
+            } else {
+                g.drawString("Dealer: " + reduceDealerAce(), 20, 200);
+            }
+            g.drawString("Player: " + reducePlayerAce(), 20, 310);
+
             if (!stayButton.isEnabled()) {
                 dealerSum = reduceDealerAce();
                 playerSum = reducePlayerAce();
