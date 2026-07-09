@@ -181,7 +181,7 @@ public class BlackJack {
                 playerAceCount += card.isAce() ? 1 : 0;
                 playerHand.add(card);
                 gamePanel.repaint();
-                if (reducePlayerAce() > 21) { // bust — end game automatically, no dealer draw needed
+                if (reducePlayerAce() > 21) { // bust — end game automatically
                     endGame();
                 } else if (reducePlayerAce() == 21) { // Blackjack — end game automatically
                     stayButton.doClick();
