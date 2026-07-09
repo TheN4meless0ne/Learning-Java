@@ -181,8 +181,8 @@ public class BlackJack {
                 playerAceCount += card.isAce() ? 1 : 0;
                 playerHand.add(card);
                 gamePanel.repaint();
-                if (reducePlayerAce() > 21) { // A + 2 + J --> 1 + 2 + J
-                    hitButton.setEnabled(false);
+                if (reducePlayerAce() > 21) { // bust — end game automatically, no dealer draw needed
+                    endGame();
                 } else if (reducePlayerAce() == 21) { // Blackjack — end game automatically
                     stayButton.doClick();
                 }
@@ -227,6 +227,12 @@ public class BlackJack {
         }
         cardImages.put("/assets/cards/BACK.png",
             new ImageIcon(getClass().getResource("/assets/cards/BACK.png")).getImage());
+    }
+
+    private void endGame() {
+        hitButton.setEnabled(false);
+        stayButton.setEnabled(false);
+        gamePanel.repaint();
     }
 
     public void startGame() {
