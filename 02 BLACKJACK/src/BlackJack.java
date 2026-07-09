@@ -108,9 +108,6 @@ public class BlackJack {
                 else if (playerSum == dealerSum) {
                     message = "Tie!";
                 }
-                else if (playerSum > dealerSum) {
-                    message = "You Win!";
-                }
                 else if (playerSum < dealerSum) {
                     message = "You Lose!";
                 }
