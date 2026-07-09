@@ -34,7 +34,7 @@ public class BlackJack {
         }
 
         public String getImagePath() {
-            return "../assets/cards/" + toString() + ".png";
+            return "/assets/cards/" + toString() + ".png";
         }
     }
 
@@ -67,7 +67,7 @@ public class BlackJack {
 
             try {
             // draw hidden card
-            Image hiddenCardImg = new ImageIcon(getClass().getResource("../assets/cards/BACK.png")).getImage();
+            Image hiddenCardImg = new ImageIcon(getClass().getResource("/assets/cards/BACK.png")).getImage();
             if (!stayButton.isEnabled()) {
                 hiddenCardImg = new ImageIcon(getClass().getResource(hiddenCard.getImagePath())).getImage();
             }
