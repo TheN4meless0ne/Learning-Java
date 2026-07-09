@@ -1,7 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import javax.swing.*;
 
@@ -38,19 +39,20 @@ public class BlackJack {
         }
     }
 
-    ArrayList<Card> deck;
-    Random random = new Random(); // shuffle deck
+    private ArrayList<Card> deck;
+    private Random random = new Random(); // shuffle deck
+    private Map<String, Image> cardImages = new HashMap<>();
 
     // dealer
-    Card hiddenCard;
-    ArrayList<Card> dealerHand;
-    int dealerSum;
-    int dealerAceCount;
+    private Card hiddenCard;
+    private ArrayList<Card> dealerHand;
+    private int dealerSum;
+    private int dealerAceCount;
 
     // player
-    ArrayList<Card> playerHand;
-    int playerSum;
-    int playerAceCount;
+    private ArrayList<Card> playerHand;
+    private int playerSum;
+    private int playerAceCount;
 
     // window
     int boardWidth = 600;
@@ -67,23 +69,23 @@ public class BlackJack {
 
             try {
             // draw hidden card
-            Image hiddenCardImg = new ImageIcon(getClass().getResource("/assets/cards/BACK.png")).getImage();
+            Image hiddenCardImg = cardImages.get("/assets/cards/BACK.png");
             if (!stayButton.isEnabled()) {
-                hiddenCardImg = new ImageIcon(getClass().getResource(hiddenCard.getImagePath())).getImage();
+                hiddenCardImg = cardImages.get(hiddenCard.getImagePath());
             }
             g.drawImage(hiddenCardImg, 20, 20, cardWidth, cardHeight, null);
 
             // draw dealer hand
             for (int i = 0; i < dealerHand.size(); i++) {
                 Card card = dealerHand.get(i);
-                Image cardImg = new ImageIcon(getClass().getResource(card.getImagePath())).getImage();
+                Image cardImg = cardImages.get(card.getImagePath());
                 g.drawImage(cardImg, cardWidth + 25 + (cardWidth + 5) * i, 20, cardWidth, cardHeight, null);
             }
 
             // draw player hand
             for (int i = 0; i < playerHand.size(); i++) {
                 Card card = playerHand.get(i);
-                Image cardImg = new ImageIcon(getClass().getResource(card.getImagePath())).getImage();
+                Image cardImg = cardImages.get(card.getImagePath());
                 g.drawImage(cardImg, 20 + (cardWidth + 5) * i, 320, cardWidth, cardHeight, null);
             }
 
@@ -115,17 +117,6 @@ public class BlackJack {
                 g.setFont(new Font("Arial", Font.PLAIN, 30));
                 g.setColor(Color.WHITE);
                 g.drawString(message, 220, 250);
-                
-                playAgainButton.setFocusable(false);
-                playAgainButton.addActionListener(e -> {
-                    hitButton.setEnabled(true);
-                    stayButton.setEnabled(true);
-                    buttonPanel.remove(playAgainButton);
-                    startGame();
-                    gamePanel.repaint();
-                    buttonPanel.revalidate();
-                    buttonPanel.repaint();
-                });
 
                 buttonPanel.add(playAgainButton);
                 buttonPanel.revalidate();
@@ -143,12 +134,13 @@ public class BlackJack {
     JButton playAgainButton = new JButton("Play Again");
 
     BlackJack() {
+        loadImages();
         startGame();
 
         frame.setVisible(true);
         frame.setSize(boardWidth, boardHeight);
         frame.setLocationRelativeTo(null);
-        frame.setResizable(true);
+        frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         gamePanel.setLayout(new BorderLayout());
@@ -160,6 +152,17 @@ public class BlackJack {
         stayButton.setFocusable(false);
         buttonPanel.add(stayButton);
         frame.add(buttonPanel, BorderLayout.SOUTH);
+
+        playAgainButton.setFocusable(false);
+        playAgainButton.addActionListener(e -> {
+            hitButton.setEnabled(true);
+            stayButton.setEnabled(true);
+            buttonPanel.remove(playAgainButton);
+            startGame();
+            gamePanel.repaint();
+            buttonPanel.revalidate();
+            buttonPanel.repaint();
+        });
 
         hitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -190,6 +193,19 @@ public class BlackJack {
         });
 
         gamePanel.repaint();
+    }
+
+    private void loadImages() {
+        String[] values = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+        String[] types = {"C", "D", "H", "S"};
+        for (String type : types) {
+            for (String value : values) {
+                String path = "/assets/cards/" + value + "-" + type + ".png";
+                cardImages.put(path, new ImageIcon(getClass().getResource(path)).getImage());
+            }
+        }
+        cardImages.put("/assets/cards/BACK.png",
+            new ImageIcon(getClass().getResource("/assets/cards/BACK.png")).getImage());
     }
 
     public void startGame() {
@@ -253,12 +269,11 @@ public class BlackJack {
     }
 
     public void shuffleDeck() {
-        for (int i = 0; i < deck.size(); i++) {
-            int j = random.nextInt(deck.size());
-            Card currCard = deck.get(i);
-            Card randomCard = deck.get(j);
-            deck.set(i, randomCard);
-            deck.set(j, currCard);
+        for (int i = deck.size() -1; i > 0; i--) {
+            int j = random.nextInt(i + 1);
+            Card temp = deck.get(i);
+            deck.set(i, deck.get(j));
+            deck.set(j, temp);
         }
 
         System.out.println("AFTER SHUFFLE:");
